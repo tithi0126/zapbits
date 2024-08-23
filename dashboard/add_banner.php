@@ -20,6 +20,7 @@ if (isset($_COOKIE['view_id'])) {
 }
 if (isset($_REQUEST["btnsubmit"])) {
 	$banner_title = $_REQUEST["banner_title"];
+	$description = $_REQUEST["description"];
 	$status = isset($_REQUEST["status"]) ? "Enable" : "Disable";
 	$banner_img = $_FILES['banner_img']['name'];
 	$banner_img = str_replace(' ', '_', $banner_img);
@@ -41,8 +42,8 @@ if (isset($_REQUEST["btnsubmit"])) {
 		}
 	}
 	try {
-		$stmt = $obj->con1->prepare("INSERT INTO `banner`(`name`,`filename`, `status`) VALUES (?,?,?)");
-		$stmt->bind_param("sss", $banner_title,  $PicFileName, $status);
+		$stmt = $obj->con1->prepare("INSERT INTO `banner`(`name`,`description`,`filename`, `status`) VALUES (?,?,?,?)");
+		$stmt->bind_param("ssss", $banner_title,$description, $PicFileName, $status);
 		$Resp = $stmt->execute();
 		if (!$Resp) {
 			throw new Exception(
@@ -65,6 +66,7 @@ if (isset($_REQUEST["btnsubmit"])) {
 if (isset($_REQUEST["btn_update"])) {
 	$id = $_COOKIE['edit_id'];
 	$banner_title = $_REQUEST["banner_title"];
+	$description = $_REQUEST["description"];
 	$status = (isset($_REQUEST["status"]) && $_REQUEST["status"] == 'on') ? 'Enable' : 'Disable';
 	$banner_img = $_FILES['banner_img']['name'];
 	$banner_img = str_replace(' ', '_', $banner_img);
@@ -95,8 +97,8 @@ if (isset($_REQUEST["btn_update"])) {
 	}
 	//echo $PicFileName;
 	try {
-		$stmt = $obj->con1->prepare("UPDATE `banner` SET `name`=?,  `filename`=?,`status`=? WHERE `srno`=?");
-		$stmt->bind_param("sssi", $banner_title,  $PicFileName, $status, $id);
+		$stmt = $obj->con1->prepare("UPDATE `banner` SET `name`=?,`description`=?,`filename`=?,`status`=? WHERE `srno`=?");
+		$stmt->bind_param("ssssi", $banner_title,  $PicFileName, $status, $id);
 		$Resp = $stmt->execute();
 		if (!$Resp) {
 			throw new Exception(
@@ -125,94 +127,116 @@ function is_image($filename)
 }
 ?>
 <div class='p-6'>
-	<div class="flex gap-6 items-center pb-8">
-		<span class="cursor-pointer">
-			<a href="javascript:go_back()" class="text-3xl text-black dark:text-white">
-				<i class="ri-arrow-left-line"></i>
-			</a>
-		</span>
-		<h1 class="dark:text-white-dar text-2xl font-bold">Banner Image - <?php echo (isset($mode)) ? (($mode == 'view') ? 'View' : 'Edit') : 'Add' ?></h1>
-	</div>
-	<div class="panel mt-6">
-		<div class="mb-5">
-			<form class="space-y-5" method="post" enctype="multipart/form-data">
-				<div>
-					<label for="banner_title">Title</label>
-					<input id="banner_title" name="banner_title" type="text" class="form-input" required value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" placeholder="Write Title" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
-				</div>
+    <div class="flex gap-6 items-center pb-8">
+        <span class="cursor-pointer">
+            <a href="javascript:go_back()" class="text-3xl text-black dark:text-white">
+                <i class="ri-arrow-left-line"></i>
+            </a>
+        </span>
+        <h1 class="dark:text-white-dar text-2xl font-bold">Banner Image -
+            <?php echo (isset($mode)) ? (($mode == 'view') ? 'View' : 'Edit') : 'Add' ?></h1>
+    </div>
+    <div class="panel mt-6">
+        <div class="mb-5">
+            <form class="space-y-5" method="post" enctype="multipart/form-data">
+                <div>
+                    <label for="banner_title">Title</label>
+                    <input id="banner_title" name="banner_title" type="text" class="form-input" required
+                        value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" placeholder="Write Title"
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                </div>
+                <div>
+                    <label for="address">Description</label>
+                    <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" value=""
+                        required
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>><?php echo isset($mode) ? $data['description'] : '' ?></textarea>
+                </div>
 
-				<div class="mb-4">
-					<label for="custom_switch_checkbox1">Status</label>
-					<label class="w-12 h-6 relative">
-						<input type="checkbox" class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="status" name="status" <?php echo (isset($mode) && $data['status'] == 'Enable') ? 'checked' : '' ?> <?php echo (isset($mode) && $mode == 'view') ? 'disabled' : '' ?>><span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
-					</label>
-				</div>
+                <div class="mb-4">
+                    <label for="custom_switch_checkbox1">Status</label>
+                    <label class="w-12 h-6 relative">
+                        <input type="checkbox"
+                            class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="status"
+                            name="status" <?php echo (isset($mode) && $data['status'] == 'Enable') ? 'checked' : '' ?>
+                            <?php echo (isset($mode) && $mode == 'view') ? 'disabled' : '' ?>><span
+                            class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
+                    </label>
+                </div>
 
-				<div <?php echo (isset($mode) && $mode == 'view') ? 'hidden' : '' ?>>
-					<label for="image">Image</label>
-					<input id="banner_img" name="banner_img" class="demo1" type="file" data_btn_text="Browse"  accept="image/*" onchange="readURL(this,'PreviewImage')" placeholder="drag and drop file here" />
-				</div>
-				<div>
-					<h4 class="font-bold text-primary mt-2 mb-3" style="display:<?php echo (isset($mode)) ? 'block' : 'none' ?>" id="preview_lable">Preview</h4>
-					<div id="mediaPreviewContainer" style="display:<?php echo (isset($mode)) ? 'block' : 'none' ?>">
-						<img src="<?php echo (isset($mode) && is_image($data["filename"])) ? 'images/banner_image/' . $data["filename"] : '' ?>" name="PreviewMedia" id="PreviewMedia" width="400" height="400" style="display:<?php echo (isset($mode) && is_image($data["filename"])) ? 'block' : 'none' ?>" class="object-cover shadow rounded">
-						
-						<div id="imgdiv" style="color:red"></div>
-						<input type="hidden" name="old_img" id="old_img" value="<?php echo (isset($mode) && $mode == 'edit') ? $data["filename"] : '' ?>" />
-					</div>
-				</div>
-					
-				<div class="relative inline-flex align-middle gap-3 mt-4 ">
-					<button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'btn_update' : 'btnsubmit' ?>" id="save" class="btn btn-success <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-						<?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
-					</button>
-					<button type="button" class="btn btn-danger" onclick="location.href='banner.php'">Close</button>
-				</div>
-			</form>
-		</div>
-	</div>
-	<script type="text/javascript">
-		function go_back() {
-			eraseCookie("edit_id");
-			eraseCookie("view_id");
-			window.location = "banner.php";
-		}
-		
-		function readURL(input, preview) {
-			if (input.files && input.files[0]) {
-				var filename = input.files.item(0).name;
-				var extn = filename.split(".").pop().toLowerCase();
+                <div <?php echo (isset($mode) && $mode == 'view') ? 'hidden' : '' ?>>
+                    <label for="image">Image</label>
+                    <input id="banner_img" name="banner_img" class="demo1" type="file" data_btn_text="Browse"
+                        accept="image/*" onchange="readURL(this,'PreviewImage')"
+                        placeholder="drag and drop file here" />
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mt-2 mb-3"
+                        style="display:<?php echo (isset($mode)) ? 'block' : 'none' ?>" id="preview_lable">Preview</h4>
+                    <div id="mediaPreviewContainer" style="display:<?php echo (isset($mode)) ? 'block' : 'none' ?>">
+                        <img src="<?php echo (isset($mode) && is_image($data["filename"])) ? 'images/banner_image/' . $data["filename"] : '' ?>"
+                            name="PreviewMedia" id="PreviewMedia" width="400" height="400"
+                            style="display:<?php echo (isset($mode) && is_image($data["filename"])) ? 'block' : 'none' ?>"
+                            class="object-cover shadow rounded">
 
-				if (["jpg", "jpeg", "png", "bmp"].includes(extn)) {
-					// Handle image preview
-					console.log("image");
-					displayImagePreview(input, preview);
-				} else if (["mp4", "webm", "ogg"].includes(extn)) {
-					// Handle video preview
-					console.log("video");
-					displayVideoPreview(input, preview);
-				} else {
-					// Display error message for unsupported file types
-					$('#imgdiv').html("Unsupported file type. Please select an image or video.");
-					document.getElementById('mediaPreviewContainer').style.display = "none";
-				}
-			}
-		}
-		function displayImagePreview(input, preview) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('mediaPreviewContainer').style.display = "block";
-				$('#PreviewMedia').attr('src', e.target.result);
-				document.getElementById('PreviewMedia').style.display = "block";
-				document.getElementById('preview_lable').style.display = "block";
-				document.getElementById('PreviewVideo').style.display = "none";
-			};
-			reader.readAsDataURL(input.files[0]);
-			$('#imgdiv').html("");
-			document.getElementById('save').disabled = false;
-		}
-	
-	</script>
-	<?php
+                        <div id="imgdiv" style="color:red"></div>
+                        <input type="hidden" name="old_img" id="old_img"
+                            value="<?php echo (isset($mode) && $mode == 'edit') ? $data["filename"] : '' ?>" />
+                    </div>
+                </div>
+
+                <div class="relative inline-flex align-middle gap-3 mt-4 ">
+                    <button type="submit"
+                        name="<?php echo isset($mode) && $mode == 'edit' ? 'btn_update' : 'btnsubmit' ?>" id="save"
+                        class="btn btn-success <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                        <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="location.href='banner.php'">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function go_back() {
+        eraseCookie("edit_id");
+        eraseCookie("view_id");
+        window.location = "banner.php";
+    }
+
+    function readURL(input, preview) {
+        if (input.files && input.files[0]) {
+            var filename = input.files.item(0).name;
+            var extn = filename.split(".").pop().toLowerCase();
+
+            if (["jpg", "jpeg", "png", "bmp"].includes(extn)) {
+                // Handle image preview
+                console.log("image");
+                displayImagePreview(input, preview);
+            } else if (["mp4", "webm", "ogg"].includes(extn)) {
+                // Handle video preview
+                console.log("video");
+                displayVideoPreview(input, preview);
+            } else {
+                // Display error message for unsupported file types
+                $('#imgdiv').html("Unsupported file type. Please select an image or video.");
+                document.getElementById('mediaPreviewContainer').style.display = "none";
+            }
+        }
+    }
+
+    function displayImagePreview(input, preview) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('mediaPreviewContainer').style.display = "block";
+            $('#PreviewMedia').attr('src', e.target.result);
+            document.getElementById('PreviewMedia').style.display = "block";
+            document.getElementById('preview_lable').style.display = "block";
+            document.getElementById('PreviewVideo').style.display = "none";
+        };
+        reader.readAsDataURL(input.files[0]);
+        $('#imgdiv').html("");
+        document.getElementById('save').disabled = false;
+    }
+    </script>
+    <?php
 	include "footer.php";
 	?>
