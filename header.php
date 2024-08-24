@@ -183,7 +183,7 @@ $stmt_srch_cat->close();
                                                     ?>
 
                                                     <option><?php echo $category_srch["name"] ?></option>
-                                                <?php
+                                                    <?php
                                                     }
                                                 ?>
                                             </select>
@@ -305,7 +305,7 @@ $stmt_srch_cat->close();
                                                 <a href="index.php">Home</a>
 
                                             </li>
-                                            <li><a href="aboutus.php">About Us</a></li>
+                                            <li><a href="about.php">About Us</a></li>
                                             <li class="has-mega"><a href="#">Shop </a>
 
                                             </li>
