@@ -127,11 +127,13 @@ function add_data(){
     window.location = "add_state.php";
 }
 function editdata(id){
+    eraseCookie("viewId");
     createCookie("editId",id,1);
     window.location = "add_state.php";
 }
 
 function viewdata(id){
+    eraseCookie("editId");
     createCookie("viewId",id,1);
     window.location = "add_state.php";
 }

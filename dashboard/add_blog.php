@@ -22,7 +22,6 @@ if (isset($_COOKIE['view_id'])) {
 }
 if (isset($_REQUEST["btnsubmit"])) {
 	$blog_title = $_REQUEST["title"];
-    // $state_name = $_REQUEST["state_id"];
     $category_name = $_REQUEST["blog_category_id"];
 	$short_desc = $_REQUEST["short_desc"];
 	$description = $_REQUEST["description"];
@@ -76,7 +75,7 @@ if (isset($_REQUEST["btnsubmit"])) {
 if (isset($_REQUEST["btn_update"])) {
 	$id = $_COOKIE['edit_id'];
 	$blog_title = $_REQUEST["title"];
-    // $state_id = $_REQUEST["state_id"];
+  
     $blog_category_id = $_REQUEST["blog_category_id"];
 	$short_desc = $_REQUEST["short_desc"];
 	$description = $_REQUEST["description"];
@@ -86,7 +85,6 @@ if (isset($_REQUEST["btn_update"])) {
 	$blog_img = $_FILES['blog_img']['name'];
 	$blog_img = str_replace(' ', '_', $blog_img);
 	$blog_img_path = $_FILES['blog_img']['tmp_name'];
-	// $blog_id = $_REQUEST['blog_id'];
 	$old_img = $_REQUEST['old_img'];
 
 	if ($blog_img != "") {
@@ -240,7 +238,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         <input type="checkbox"
                             class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="status"
                             name="status" <?php echo (isset($mode) && $data['status'] == 'Enable') ? 'checked' : '' ?>
-                            <?php echo (isset($mode) && $mode == 'view') ? 'Disabled' : '' ?>><span
+                            <?php echo (isset($mode) && $mode == 'view') ? 'Disabled' : '' ?> required><span
                             class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                     </label>
                 </div>
@@ -250,7 +248,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         <input type="checkbox"
                             class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="pstatus"
                             name="pstatus" <?php echo (isset($mode) && $data['publish_status'] == 'Publish') ? 'checked' : '' ?>
-                            <?php echo (isset($mode) && $mode == 'view') ? 'Disabled' : '' ?>><span
+                            <?php echo (isset($mode) && $mode == 'view') ? 'Disabled' : '' ?> required><span
                             class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                     </label>
                 </div>
@@ -404,11 +402,13 @@ function go_back() {
 }
 
 function editdata(id) {
+    eraseCookie("view_id");
     createCookie("edit_subimg_id", id, 1);
     window.location = "add_blog_subimages.php";
 }
 
 function viewdata(id) {
+    eraseCookie("edit_id");
     createCookie("view_subimg_id", id, 1);
     window.location = "add_blog_subimages.php";
 }

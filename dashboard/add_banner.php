@@ -98,7 +98,7 @@ if (isset($_REQUEST["btn_update"])) {
 	//echo $PicFileName;
 	try {
 		$stmt = $obj->con1->prepare("UPDATE `banner` SET `name`=?,`description`=?,`filename`=?,`status`=? WHERE `srno`=?");
-		$stmt->bind_param("ssssi", $banner_title,  $PicFileName, $status, $id);
+		$stmt->bind_param("ssssi", $banner_title, $description , $PicFileName, $status, $id);
 		$Resp = $stmt->execute();
 		if (!$Resp) {
 			throw new Exception(
@@ -146,8 +146,8 @@ function is_image($filename)
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                 </div>
                 <div>
-                    <label for="address">Description</label>
-                    <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" value=""
+                    <label for="description">Description</label>
+                    <textarea autocomplete="on" name="description" id="description" class="form-textarea" rows="2" value=""
                         required
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>><?php echo isset($mode) ? $data['description'] : '' ?></textarea>
                 </div>

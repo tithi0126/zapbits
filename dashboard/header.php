@@ -55,7 +55,8 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "add_blog_subimages.php",
         "add_notification.php",
         "add_offline_sales.php",
-        "add_privacy_policy.php"
+        "add_privacy_policy.php",
+        "user_profile.php"
     );
 } elseif (isset($_SESSION['type_vendor']) && $_SESSION['type_vendor']) {
     $allowed_pages = array(

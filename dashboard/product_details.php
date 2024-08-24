@@ -167,11 +167,13 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     }
 
     function editdata(id) {
+        eraseCookie("view_id");
         createCookie("edit_id", id, 1);
         window.location = "add_product.php";
     }
 
     function viewdata(id) {
+        eraseCookie("edit_id");
         createCookie("view_id", id, 1);
         window.location = "add_product.php";
     }
