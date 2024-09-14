@@ -27,15 +27,16 @@ if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
     $details = $_REQUEST["details"];
 	$status = (isset($_REQUEST["status"]) && $_REQUEST["status"] == 'on') ? 'Enable' : 'Disable';
+    $pstatus = isset($_REQUEST["pstatus"]) ? "Publish" : "Preview";
     $operation = "Added";
     $sort_order="1";
 
 
     try {
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `product_category`(`name`, `details`, `stats`, `operation`,`sort_order`) VALUES (?,?,?,?,?)"
+            "INSERT INTO `product_category`(`name`, `details`, `stats`,publish_status, `operation`,`sort_order`) VALUES (?,?,?,?,?,?)"
         );
-        $stmt->bind_param("ssssi",$name,$details ,$status,$operation,$sort_order);
+        $stmt->bind_param("sssssi",$name,$details ,$status,$pstatus,$operation,$sort_order);
         $Resp = $stmt->execute();
         if (!$Resp) {
             throw new Exception(
@@ -60,6 +61,7 @@ if (isset($_REQUEST["update"])) {
     $name = $_REQUEST["name"];
     $details = $_REQUEST["details"];
 	$status = (isset($_REQUEST["status"]) && $_REQUEST["status"] == 'on') ? 'Enable' : 'Disable';
+    $pstatus = isset($_REQUEST["pstatus"]) ? "Publish" : "Preview";
     $added_by = $_SESSION["id"];
     $editId = $_COOKIE["edit_id"];
     $operation = "Updated";
@@ -67,9 +69,9 @@ if (isset($_REQUEST["update"])) {
 
     try {
         $stmt = $obj->con1->prepare(
-            "UPDATE `product_category` SET `name`=?,`details`=?,`stats`=?,`operation`=? WHERE `id`=?"
+            "UPDATE `product_category` SET `name`=?,`details`=?,`stats`=?,`publish_status`=?,`operation`=? WHERE `id`=?"
         );
-        $stmt->bind_param("ssssi", $name, $details , $status, $operation, $editId);
+        $stmt->bind_param("sssssi", $name, $details , $status, $pstatus ,$operation, $editId);
 
         $Resp = $stmt->execute();
         if (!$Resp) {
@@ -130,6 +132,16 @@ if (isset($_REQUEST["update"])) {
                             class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="status"
                             name="status" <?php echo (isset($mode) && $data['stats'] == 'Enable') ? 'checked' : '' ?>
                             <?php echo (isset($mode) && $mode == 'view') ? 'disabled' : '' ?>><span
+                            class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
+                    </label>
+                </div>
+                <div class="mb-4">
+                    <label for="custom_switch_checkbox1">Publish Status</label>
+                    <label class="w-12 h-6 relative">
+                        <input type="checkbox"
+                            class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" id="pstatus"
+                            name="pstatus" <?php echo (isset($mode) && $data['publish_status'] == 'Publish') ? 'checked' : '' ?>
+                            <?php echo (isset($mode) && $mode == 'view') ? 'Disabled' : '' ?> ><span
                             class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                     </label>
                 </div>

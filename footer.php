@@ -31,9 +31,9 @@
                             <div class="footer__widget-content">
                                 <div class="footer__link">
                                     <ul>
-                                        <li><a href="#">Home</a></li>
-                                        <li><a href="about.php">About Us</a></li>
-                                        <li><a href="#">Contact Us</a></li>
+                                        <li><a href="index.php">Home</a></li>
+                                        <li><a href="aboutus.php">About Us</a></li>
+                                        <li><a href="contact.php">Contact Us</a></li>
                                         <li><a href="#">Shop</a></li>
                                     </ul>
                                 </div>

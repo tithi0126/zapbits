@@ -56,7 +56,9 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "add_notification.php",
         "add_offline_sales.php",
         "add_privacy_policy.php",
-        "user_profile.php"
+        "user_profile.php",
+        "about_details.php",
+        "add_about_details.php"
     );
 } elseif (isset($_SESSION['type_vendor']) && $_SESSION['type_vendor']) {
     $allowed_pages = array(
@@ -496,6 +498,24 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </a>
                         </li>
+
+                        <li class="menu nav-item">
+                            <a href="about_details.php"
+                                class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "about_details.php" ? "active" : "" ?>">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path
+                                            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">About US Details
+
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        
+
 
                         <li class="menu nav-item">
                             <a href="notification.php"

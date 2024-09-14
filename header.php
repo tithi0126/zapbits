@@ -305,14 +305,14 @@ $stmt_srch_cat->close();
                                                 <a href="index.php">Home</a>
 
                                             </li>
-                                            <li><a href="about.php">About Us</a></li>
-                                            <li class="has-mega"><a href="#">Shop </a>
+                                            <li><a href="aboutus.php">About Us</a></li>
+                                            <li class="has-mega"><a href="shop.php">Shop </a>
 
                                             </li>
                                             <li><a href="blog.php" class="active">Blog </a>
 
                                             </li>
-                                            <li><a href="#">Contact Us</a></li>
+                                            <li><a href="contact.php">Contact Us</a></li>
 
                                         </ul>
                                     </nav>

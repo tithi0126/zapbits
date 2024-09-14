@@ -61,7 +61,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             init() {
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', 'Details', 'Status', 'Actions'],
+                        headings: ['Sr.No.', 'Name', 'Details', 'Status','Publish Status', 'Actions'],
                         data: [
                             <?php
                             $stmt = $obj->con1->prepare(
@@ -76,7 +76,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     <?php echo $i; ?>,
                                     '<?php echo $row["name"]; ?>',
                                     '<?php echo $row["details"]; ?>',
+                                    
                                     '<span class="badge whitespace-nowrap" :class="{\'badge-outline-success\': \'<?php echo $row["stats"]; ?>\' === \'Enable\', \'badge-outline-danger\': \'<?php echo $row["stats"]; ?>\' === \'Disable\'}"><?php echo $row["stats"]; ?></span>',
+                                    '<span class="badge whitespace-nowrap" :class="{\'badge-outline-secondary\': \'<?php echo $row["publish_status"]; ?>\' === \'Publish\', \'badge-outline-warning\': \'<?php echo $row["publish_status"]; ?>\' === \'Preview\'}"><?php echo $row["publish_status"]; ?></span>',
                                     getActions(<?php echo $row["id"]; ?>)
                                 ],
                             <?php
